@@ -50,8 +50,24 @@ TEST(TankTest, MoveTank) {
 
     // 检查位置
     Position pos = t->getPosition();
-    EXPECT_EQ(DOWN, t->getStatus());
+    EXPECT_EQ(DOWN, t->getStatus() & MASK_DIRECTION);
     EXPECT_EQ(Position(0, 1), pos);
     EXPECT_EQ(2, t->getTimer());
 
+}
+
+TEST(TankTest, Fire) {
+    Tank *t = new Tank(PLAYER_ID_1 | RIGHT, 4);
+    t->setPosition({3, 3});
+    TankEngine engine;
+    engine.addTank(t);
+
+    engine.handle(PLAYER_ID_1 | FIRE);
+
+    // 子弹初始化位置（6，4），再次刷新后（7, 4）
+    engine.refresh();
+    Bullet *b = engine.getBullets().front();
+    EXPECT_EQ(Position(7, 4), b->getPosition());
+
+    delete t;
 }

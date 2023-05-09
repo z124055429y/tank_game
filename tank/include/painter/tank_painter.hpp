@@ -5,7 +5,7 @@
 #include "element/tank.hpp"
 
 /**
- * 坦克画笔，绘制坦克
+ * 坦克画笔, 绘制坦克
 */
 class TankPainter
 {

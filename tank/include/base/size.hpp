@@ -7,9 +7,9 @@
 class Size
 {
 private:
-    /// @brief 行数，高度
+    /// @brief 行数, 高度
     int mRows;
-    /// @brief 列数，宽度 
+    /// @brief 列数, 宽度 
     int mCols;
 public:
     Size(): Size(0, 0) {}

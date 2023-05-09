@@ -28,7 +28,9 @@ STATUS Element::getStatus()
 }
 void Element::setDirection(STATUS status)
 {
-    mStatus = status;
+    status &= MASK_DIRECTION;
+    mStatus &= ~MASK_DIRECTION;
+    mStatus |= status;
 }
     
 int** Element::getBitmap(int &rows, int &cols) {

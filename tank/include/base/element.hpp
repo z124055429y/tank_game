@@ -13,6 +13,7 @@
 class Element
 {
 protected:
+    /// 不同类型的元素, 对status的解读可能不同
     STATUS mStatus;
     Position mPos;
     Size mSize;
@@ -36,7 +37,7 @@ public:
     /// @brief 获取位图
     /// @param rows 位图行数 
     /// @param cols 位图列数
-    /// @return 返回位图指针，可操作
+    /// @return 返回位图指针, 可操作
     int **getBitmap(int &rows, int &cols);
 };
 
