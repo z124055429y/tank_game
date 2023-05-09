@@ -1,12 +1,22 @@
 #include "base/generator.hpp"
 
-Generator::Generator(/* args */)
-{
+Generator::Generator(/* args */): mDetector(nullptr) {}
+Generator::~Generator() {}
+
+Detector* Generator::allocDetector(Size size) {
+    if (mDetector != nullptr) {
+        freeDetector(&mDetector);
+    }
+    Detector *detector = new Detector(size);
+    return detector;
 }
 
-Generator::~Generator()
-{
+void Generator::freeDetector(Detector **detector) {
+    if (*detector == nullptr) return;
+    delete *detector;
+    *detector = nullptr;
 }
+
 
 Bullet* Generator::allocBullet(int x, int y, int status) {
     Bullet *bullet = new Bullet(x, y, status);

@@ -64,10 +64,9 @@ TEST(TankTest, Fire) {
 
     engine.handle(PLAYER_ID_1 | FIRE);
 
-    // 子弹初始化位置（6，4），再次刷新后（7, 4）
     engine.refresh();
     Bullet *b = engine.getBullets().front();
-    EXPECT_EQ(Position(7, 4), b->getPosition());
+    EXPECT_EQ(Position(6, 4), b->getPosition());
 
     delete t;
 }

@@ -7,7 +7,6 @@
 #include "timer.hpp"
 #include "handler.hpp"
 
-
 void alarm_action(int signo);
 void registSignal();
 
@@ -43,16 +42,20 @@ void registSignal() {
 
 void Game::run() {
     Tank *tank = new Tank(PLAYER_ID_1 | DOWN, 2);
+    tank->setPosition({3, 3});
+    Map *map = new Map(20, 40);
     tankEngine->addTank(tank);
+    tankEngine->bindMap(map);
     while (!mQuit) {
         char ch = getch();
         if (ch == 'q') { mQuit = true; break; }
-        // 生成命令
+        // 通过输入产生命令
         int cmd = Handler::generateCommand(ch);
         if (cmd == 0) continue;
         mQuit = tankEngine->handle(cmd);
     }
     delete tank;
+    delete map;
 }
 
 void Game::refresh() {
@@ -70,6 +73,7 @@ void Game::render() {
         {
             for (int j = 0; j < cols; j++)
             {
+                if (b[i][j] == ' ') continue;
                 mvaddch(i + pos.getY(), j + pos.getX(), b[i][j]);
             }
         }

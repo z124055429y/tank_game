@@ -1,10 +1,7 @@
 #include "engine.hpp"
 
-int checkTouch(Tank *tank);
-
-TankEngine::TankEngine(): mCmds(10, 0) { }
-
-TankEngine::~TankEngine() { }
+TankEngine::TankEngine(): mCmds(10, 0), mMap(nullptr), detector(nullptr) {}
+TankEngine::~TankEngine() {}
 
 bool TankEngine::handle(int command) {
     int playerId = command & MASK_PLAYER_ID;
@@ -31,6 +28,10 @@ void TankEngine::refresh() {
     updateTank();
     // 更新子弹
     updateBullet();
+    // 更新地图
+    updateMap();
+    // 处理碰撞
+    handleCollision();
     // tick可移动的元素
     tickMoveElement();
 }
@@ -65,8 +66,12 @@ int TankEngine::getTankAction(Tank *tank) {
 
 bool TankEngine::moveTank(Tank *tank, int action) {
     int flag = 0;
-
-    /// TODO: touch行为处理，满足接触条件不触发移动操作
+    if (detector != nullptr && mMap != nullptr) {
+        /// TODO: touch行为处理，满足接触条件不触发移动操作
+        std::list<Touch*> constraints;
+        constraints.push_back(mMap);
+        flag = detector->touchCheck(tank, constraints);
+    }
 
     if (flag & MASK_DIRECTION & action) return false;
     tank->move(action);
@@ -101,7 +106,7 @@ void TankEngine::fireBullet(Tank *tank, int action) {
 }
 
 void TankEngine::drawTank(Tank *tank) {
-    p1.draw(tank);
+    tankPainter.draw(tank);
 }
 
 void TankEngine::updateTank() {
@@ -162,6 +167,25 @@ void TankEngine::updateBullet() {
 
 /// 子弹部分结束
 
+/// 地图部分开始
+
+void TankEngine::updateMap() {
+    if (mMap == nullptr) return;
+    mapPainter.draw(mMap);
+}
+
+/// 地图部分结束
+
+void TankEngine::handleCollision() {
+    if (detector == nullptr || mMap == nullptr) return;
+    detector->collisionCheck(mTanks, mBullets, mMap, mTmpTanks, mTmpBullets);
+    for (auto &&bullet : mTmpBullets)
+    {
+        mBullets.remove(bullet);
+        generator.freeBullet(bullet);
+    }
+}
+
 std::list<Tank*> TankEngine::getTanks() {
     return mTanks;
 }
@@ -178,6 +202,12 @@ void TankEngine::addBullet(Bullet *bullet) {
     mBullets.push_back(bullet);
 }
 
+void TankEngine::bindMap(Map *map) {
+    mMap = map;
+    Size size = mMap->getSize();
+    detector = generator.allocDetector(size);
+}
+
 std::list<Element*> TankEngine::getElements() {
     std::list<Element*> elems;
     for (auto &&tank : mTanks)
@@ -187,6 +217,9 @@ std::list<Element*> TankEngine::getElements() {
     for (auto &&bullet : mBullets)
     {
         elems.push_back(bullet);
+    }
+    if (mMap != nullptr) {
+        elems.push_back(mMap);
     }
 
     return elems;

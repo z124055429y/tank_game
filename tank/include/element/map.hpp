@@ -2,6 +2,7 @@
 #define _MAP_HPP_
 
 #include "base/element.hpp"
+#include "action/touch.hpp"
 
 /**
  * 地图类
@@ -23,7 +24,7 @@
 /**
  * 地图类
 */
-class Map: public Element
+class Map: public Element, public Touch
 {
 private:
     int **mFlag;
@@ -34,6 +35,7 @@ public:
     /// @brief 清空画布
     void clear();
     int* operator[](const int pos);
+    int touch(Element *origin);
 };
 
 

@@ -7,16 +7,21 @@
 #include <vector>
 
 #include "base/generator.hpp"
+#include "base/detector.hpp"
 #include "element/tank.hpp"
 #include "element/bullet.hpp"
+#include "element/map.hpp"
 #include "painter/tank_painter.hpp"
 #include "painter/bullet_painter.hpp"
+#include "painter/map_painter.hpp"
 
 /**
  * 坦克游戏逻辑处理
  * 
  * 具体来讲, 接收外部的调用, 更新元素的状态.
- * 注意, 只负责元素管理, 不负责元素创建.
+ * 注意:
+ *  - 只负责元素管理, 不负责元素创建.
+ *  - 绘制行为仅绘制了元素本身到对应元素的位图空间
 */
 class TankEngine
 {
@@ -26,9 +31,12 @@ private:
     std::list<Tank*>    mTmpTanks;      // 临时坦克列表
     std::list<Bullet*>  mBullets;       // 子弹列表
     std::list<Bullet*>  mTmpBullets;    // 临时子弹列表
-    TankPainter     p1;
+    Map *mMap;
+    TankPainter     tankPainter;
     BulletPainter   bulletPainter;
+    MapPainter      mapPainter;
     Generator generator;
+    Detector *detector;
     
     void updateTank();
     int getTankAction(Tank* tank);
@@ -39,6 +47,9 @@ private:
     void updateBullet();
     void moveBullet(Bullet *bullet);
     void drawBullet(Bullet* bullet);
+
+    void updateMap();
+    void handleCollision();
     void tickMoveElement();
 public:
     TankEngine();
@@ -56,6 +67,7 @@ public:
     /// 以下代码主要用来测试
     void addTank(Tank *tank);
     void addBullet(Bullet *bullet);
+    void bindMap(Map *map);
     std::list<Tank*>    getTanks();
     std::list<Bullet*>  getBullets();
     std::vector<int>    getCmd();

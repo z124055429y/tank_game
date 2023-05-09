@@ -4,6 +4,7 @@
 #include "base/position.hpp"
 #include "base/size.hpp"
 #include "base/direction.hpp"
+#include "base/allocate.hpp"
 
 /**
  * 游戏元素
@@ -40,8 +41,5 @@ public:
     /// @return 返回位图指针, 可操作
     int **getBitmap(int &rows, int &cols);
 };
-
-int** allocSpace(int rows, int cols);
-void freeSpace(int **space, int rows, int cols);
 
 #endif // _ELEMENT_HPP_

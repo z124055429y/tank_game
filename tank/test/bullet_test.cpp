@@ -16,5 +16,10 @@ TEST(BulletTest, UpdateBullet) {
     engine.addBullet(&b);
 
     engine.refresh();
+    engine.refresh();
+    engine.refresh();
+    EXPECT_EQ(Position(3, 3), b.getPosition());
+
+    engine.refresh();
     EXPECT_EQ(Position(3, 4), b.getPosition());
 }
