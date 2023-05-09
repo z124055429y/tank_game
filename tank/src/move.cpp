@@ -18,6 +18,7 @@ void Move::action() {
 int Move::getTimer() {
     return mTimer;
 }
+
 int Move::getSpeed() {
     return mSpeed;
 }

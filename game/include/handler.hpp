@@ -5,7 +5,7 @@ class Handler
 {
 public:
     Handler() {}
-    static int getcmd(char op);
+    static int generateCommand(char op);
 };
 
 #endif // _HANDLER_HPP_

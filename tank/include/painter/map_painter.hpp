@@ -3,6 +3,9 @@
 
 #include "element/map.hpp"
 
+/**
+ * 地图画笔
+*/
 class MapPainter
 {
 private:

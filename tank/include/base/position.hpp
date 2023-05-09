@@ -27,6 +27,4 @@ public:
     bool operator==(const Position& other) const { return mX == other.mX && mY == other.mY; }
 };
 
-
-
 #endif // _POSITION_HPP_

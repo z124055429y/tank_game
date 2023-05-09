@@ -20,6 +20,9 @@
 #define FLAG_RIVER      (1<<3)
 #define FLAG_GRASS      (1<<4)
 
+/**
+ * 地图类
+*/
 class Map: public Element
 {
 private:
@@ -28,6 +31,7 @@ private:
 public:
     Map(int rows, int cols);
     ~Map();
+    /// @brief 清空画布
     void clear();
     int* operator[](const int pos);
 };

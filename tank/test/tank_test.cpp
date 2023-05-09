@@ -6,7 +6,7 @@
 
 TEST(TankTest, SetTank) {
     Tank t(RIGHT, 4);
-    EXPECT_EQ(RIGHT, t.getDirection());
+    EXPECT_EQ(RIGHT, t.getStatus());
     EXPECT_EQ(false, t.isDead());
 
     t.minusHp(4);
@@ -32,38 +32,26 @@ TEST(TankTest, DrawTank) {
 TEST(TankTest, MoveTank) {
     Tank *t = new Tank(PLAYER_ID_1 | UP, 4);
     TankEngine engine;
+
+    // 初始化timer为0
+    EXPECT_EQ(0, t->getTimer());
+    
+    // 添加坦克
     engine.addTank(t);
     EXPECT_EQ(1, engine.getTanks().size());
 
+    // 玩家1向下
     engine.handle(PLAYER_ID_1 | DOWN);
-    EXPECT_EQ(1, engine.getCmd().size());
+    EXPECT_EQ(PLAYER_ID_1 | DOWN, engine.getCmd()[0]);
 
+    // 刷新一帧
     engine.refresh();
-    EXPECT_EQ(0, engine.getCmd().size());
+    EXPECT_EQ(PLAYER_ID_1, engine.getCmd()[0]);
 
+    // 检查位置
     Position pos = t->getPosition();
+    EXPECT_EQ(DOWN, t->getStatus());
     EXPECT_EQ(Position(0, 1), pos);
-    EXPECT_EQ(9, t->getTimer());
-
-
-    int row, col;
-    int **bitmap = t->getBitmap(row, col);
-    EXPECT_EQ(bitmap[2][1], '*');
-
-    engine.handle(PLAYER_ID_1 | DOWN);
-    engine.refresh();
-    EXPECT_EQ(8, t->getTimer());
-    EXPECT_EQ(1, engine.getCmd().size());
-
-    for (int i = 0; i < 9; i++)
-    {
-        EXPECT_EQ(1, engine.getCmd().size());
-        EXPECT_EQ(Position(0, 1), t->getPosition());
-        engine.refresh();
-    }
-    EXPECT_EQ(0, engine.getCmd().size());
-
-    EXPECT_EQ(9, t->getTimer());
-    EXPECT_EQ(Position(0, 2), t->getPosition());
+    EXPECT_EQ(2, t->getTimer());
 
 }

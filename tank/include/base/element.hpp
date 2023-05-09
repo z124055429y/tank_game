@@ -30,7 +30,7 @@ public:
     /// @brief 获取元素大小
     Size getSize();
     /// @brief 获取元素方向
-    STATUS getDirection();
+    STATUS getStatus();
     /// @brief 设置元素方向
     void setDirection(STATUS status);
     /// @brief 获取位图

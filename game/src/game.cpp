@@ -3,11 +3,6 @@
 #include <signal.h>
 #include <stdlib.h>
 
-#include "element/tank.hpp"
-#include "painter/tank_painter.hpp"
-#include "element/map.hpp"
-#include "painter/map_painter.hpp"
-
 #include "game.hpp"
 #include "timer.hpp"
 #include "handler.hpp"
@@ -27,7 +22,7 @@ Game::Game(): mQuit(false)
     initscr();  // 初始化ncurses
     noecho();   // 无回显
     curs_set(0);// 无光标
-    raw();      // 无行缓冲
+    cbreak();      // 无行缓冲
 }
 
 Game::~Game()
@@ -51,62 +46,21 @@ void Game::run() {
     tankEngine->addTank(tank);
     while (!mQuit) {
         char ch = getch();
-        if (ch == 'q') {
-            mQuit = true;
-            break;
-        }
-        int cmd = Handler::getcmd(ch);
+        if (ch == 'q') { mQuit = true; break; }
+        // 生成命令
+        int cmd = Handler::generateCommand(ch);
+        if (cmd == 0) continue;
         mQuit = tankEngine->handle(cmd);
     }
-
-    // 一定要先refresh，再wrefresh
-    // Map map(20,40);
-    // MapPainter painter;
-    // painter.draw(&map);
-
-    // refresh();
-    // WINDOW *win = newwin(20,40,5,5);
-
-    // int rows, cols;
-    // int **b = map.getBitmap(rows, cols);
-    // for (int i = 0; i < rows; i++)
-    // {
-    //     for (int j = 0; j < cols; j++)
-    //     {
-    //         mvwaddch(win, i, j, b[i][j]);
-    //     }
-    // }
-
-    // wborder(win, '#','#','#','#','#','#','#','#');
-    // mvwprintw(win, 1, 1, "Hello World1");
-
-    // wrefresh(win);
-    // delwin(win);
-
-    
-    // Tank *tank = new Tank(RIGHT, 3);
-    // TankPainter *painter = new TankPainter();
-    // painter->draw(tank);
-    // int row, col;
-    // int **b = tank->getBitmap(row,col);
-    // for (int i = 0; i < row; i++)
-    // {
-    //     for (int j = 0; j < col; j++)
-    //     {
-    //         mvaddch(i, j, b[i][j]);
-    //     }
-    // }
-    // refresh();
+    delete tank;
 }
 
 void Game::refresh() {
     tankEngine->refresh();
-    std::list<Tank*> tanks = tankEngine->getTanks();
-    render(tanks);
 }
 
-void Game::render(std::list<Tank*> elements) {
-    printw("size = %d\n", elements.size());
+void Game::render() {
+    std::list<Element*> elements = tankEngine->getElements();
     for (auto &&element : elements)
     {
         int rows, cols;
@@ -124,7 +78,12 @@ void Game::render(std::list<Tank*> elements) {
 
 void alarm_action(int signo)
 {
+    // 清屏
     clear();
+    // 刷新帧
     game->refresh();
+    // 渲染到缓冲
+    game->render();
+    // 刷新缓冲
     refresh();
 }

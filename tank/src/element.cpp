@@ -22,7 +22,7 @@ Size Element::getSize()
 {
     return mSize;
 }
-STATUS Element::getDirection()
+STATUS Element::getStatus()
 {
     return mStatus;
 }

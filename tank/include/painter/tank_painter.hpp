@@ -4,6 +4,9 @@
 #include "base/painter.hpp"
 #include "element/tank.hpp"
 
+/**
+ * 坦克画笔，绘制坦克
+*/
 class TankPainter
 {
 private:
@@ -24,7 +27,7 @@ public:
 
         // 得到坦克方向的位图
         const int(*tankBitmap)[3][3] = nullptr;
-        switch (tank->getDirection() & MASK_DIRECTION)
+        switch (tank->getStatus() & MASK_DIRECTION)
         {
         case UP:
             tankBitmap = &TANK_UP;

@@ -9,12 +9,14 @@ class Game
 private:
     bool mQuit;
     TankEngine* tankEngine;
-    void render(std::list<Tank*> elements);
+    /// @brief 获取每个元素并刷新到curses缓冲中
+    void render();
+    /// @brief 刷新帧数据
+    void refresh();
 public:
     Game(/* args */);
     ~Game();
     void run();
-    void refresh();
 };
 
 #endif // _GAME_HPP_
