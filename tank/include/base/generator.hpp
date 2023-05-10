@@ -22,7 +22,7 @@ public:
     ~Generator();
     Detector* allocDetector(Size size);
     void freeDetector(Detector **detector);
-    Bullet* allocBullet(int x, int y, int status);
+    Bullet* allocBullet(int x, int y, STATUS status, int damage, int speed);
     void freeBullet(Bullet *bullet);
     void freeTank(Tank *tank);
 };

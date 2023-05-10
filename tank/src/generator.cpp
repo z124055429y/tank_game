@@ -18,8 +18,8 @@ void Generator::freeDetector(Detector **detector) {
 }
 
 
-Bullet* Generator::allocBullet(int x, int y, int status) {
-    Bullet *bullet = new Bullet(x, y, status);
+Bullet* Generator::allocBullet(int x, int y, STATUS status, int damage, int speed) {
+    Bullet *bullet = new Bullet(x, y, status, damage, speed);
     mBullets.push_back(bullet);
     return bullet;
 }

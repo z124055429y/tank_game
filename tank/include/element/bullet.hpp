@@ -9,7 +9,7 @@ class Bullet: public Element, public Move
 private:
     int mDamage;
 public:
-    Bullet(int x, int y, STATUS status);
+    Bullet(int x, int y, STATUS status, int damage = 1, int speed = 3);
     ~Bullet();
     void move(int action);
     int getDamage() { return mDamage; }

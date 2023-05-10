@@ -14,12 +14,16 @@
 class Tank: public Element, public Move, public Touch
 {
 private:
+    /// @brief fire计时器
     Timer mFireTimer;
-    int mBulletDamage;  // 子弹伤害
+    /// @brief 子弹伤害
+    int mBulletDamage;
+    /// @brief 子弹速度
+    int mBulletSpeed;
     /// @brief 血量
     int mHp;
 public:
-    Tank(STATUS status, int hp);
+    Tank(STATUS status, int hp, int damage = 1, int speed = 4, int bulletSpeed = 3);
     ~Tank();
     /// @brief 是否死亡
     bool isDead();
@@ -33,6 +37,8 @@ public:
     bool isFireReady() { return mFireTimer.isReady(); }
     void fireReset() { mFireTimer.reset(); }
     int touch(Element *origin);
+    int getBulletDamage() { return mBulletDamage; }
+    int getBulletSpeed() { return mBulletSpeed; }
 };
 
 #endif // _TANK_HPP_

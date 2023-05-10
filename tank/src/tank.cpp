@@ -2,7 +2,9 @@
 #include <limits.h>
 #include "element/tank.hpp"
 
-Tank::Tank(STATUS status, int hp): Element(0, 0, 3, 3, status), Move(3), mFireTimer(4, 0), mHp(hp) {}
+Tank::Tank(STATUS status, int hp, int damage, int speed, int bulletSpeed): 
+    Element(0, 0, 3, 3, status), Move(speed), mFireTimer(bulletSpeed + 1, 0), 
+    mHp(hp), mBulletDamage(damage), mBulletSpeed(bulletSpeed) {}
 Tank::~Tank() {}
 
 bool Tank::isDead() {

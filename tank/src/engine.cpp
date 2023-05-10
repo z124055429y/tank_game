@@ -128,7 +128,9 @@ void TankEngine::fireBullet(Tank *tank, int action) {
     case RIGHT: x +=  offsetY; break;
     default: return;
     }
-    Bullet *bullet = generator.allocBullet(x, y, status & MASK_DIRECTION);
+    int damage = tank->getBulletDamage();
+    int speed = tank->getBulletSpeed();
+    Bullet *bullet = generator.allocBullet(x, y, status & MASK_DIRECTION, damage, speed);
     drawBullet(bullet);
     mBullets.push_back(bullet);
 }
