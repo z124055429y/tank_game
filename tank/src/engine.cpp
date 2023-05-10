@@ -1,3 +1,6 @@
+#include <ctime>
+#include <cstdlib>
+
 #include "engine.hpp"
 
 TankEngine::TankEngine(): mCmds(10, 0), mMap(nullptr), detector(nullptr) {}
@@ -58,9 +61,18 @@ int TankEngine::getTankAction(Tank *tank) {
     case PLAYER_ID_1: index = 0; break;
     case PLAYER_ID_2: index = 1; break;
     }
-    if (index == -1) return 0;
-    action = (mCmds[index] & MASK_ACTION);
-    mCmds[index] &= ~MASK_ACTION;
+    if (status & MASK_PLAYER_ID) {
+        action = (mCmds[index] & MASK_ACTION);
+        mCmds[index] &= ~MASK_ACTION;
+    } else {
+        int curDir = (status & MASK_DIRECTION);
+        if (tank->isFireReady()) {
+            action |= (rand() % 5) ? NONE : (rand() % 2 ? curDir : (1 << rand() % 4));
+        }
+        if (tank->isReady()) {
+            action |= (rand() % 5) ? NONE : FIRE;
+        }
+    }
     return action;
 }
 

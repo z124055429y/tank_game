@@ -4,16 +4,6 @@
 #include "base/element.hpp"
 #include "action/touch.hpp"
 
-/**
- * 地图类
- * 
- * ‘#’: 铁墙&边界: 不可破坏: 不可穿越
- * ‘^’: 土墙: 可以破坏: 不可穿越
- * ‘Y’: 草地: 不可破坏: 可以穿越
- * ‘~’: 河流: 不可破坏: 仅子弹可穿越
- * 
-*/
-
 #define MASK_LAND       (0xff)
 #define LAND_BORDER     (1)
 #define LAND_IRON_WALL  (1<<1)
@@ -23,6 +13,18 @@
 
 /**
  * 地图类
+ * 
+ * ‘#’: 边界: 不可破坏
+ * ‘#’: 铁墙: 不可破坏
+ * ‘^’: 土墙: 可以破坏
+ * ‘Y’: 草地: 不可破坏
+ * ‘~’: 河流: 不可破坏
+ * 
+ * 草地: 子弹 坦克
+ * 河流: 子弹
+ * 土墙: 都不能通过
+ * 贴墙: 都不能通过
+ * 边界: 都不能通过
 */
 class Map: public Element, public Touch
 {
@@ -35,6 +37,7 @@ public:
     int* operator[](const int pos);
     int touch(Element *origin);
     void addLand(int x, int y, int rows, int cols, int landType);
+    void destroyLand(Position pos);
 };
 
 

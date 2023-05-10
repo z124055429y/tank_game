@@ -143,8 +143,12 @@ void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bulle
     for (auto &&bullet : bullets)
     {
         Position pos = bullet->getPosition();
-        if ((*map)[pos.getY()][pos.getX()] == LAND_BORDER) {
+        int landType = (*map)[pos.getY()][pos.getX()];
+        if (landType == LAND_BORDER || landType == LAND_IRON_WALL || landType == LAND_MUD_WALL) {
             tmpBullets.insert(bullet);
+            if (landType == LAND_MUD_WALL) {
+                map->destroyLand(pos);
+            }
         }
     }
     bullets.remove_if([tmpBullets](Bullet * bullet)->bool { return tmpBullets.find(bullet) != tmpBullets.end(); });

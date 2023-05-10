@@ -18,6 +18,7 @@ void Tank::minusHp(int minusHp) {
     long long tmp = (long long)mHp - minusHp;
     mHp = (tmp <= 0) ? 0: tmp;
 }
+
 void Tank::move(int dir) {
     if ((dir & MASK_DIRECTION) == 0) return;
     // 更改坦克位置
@@ -26,6 +27,7 @@ void Tank::move(int dir) {
     mStatus &= ~MASK_DIRECTION;
     mStatus |= dir;
 }
+
 void Tank::tick(bool manual) {
     mFireTimer.tick(manual);
     Move::tick(manual);

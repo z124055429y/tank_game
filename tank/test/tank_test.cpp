@@ -70,3 +70,17 @@ TEST(TankTest, Fire) {
 
     delete t;
 }
+
+TEST(TankTest, SetEnermyTank) {
+    Tank *t = new Tank(ENERMY_ID_1 | RIGHT, 4);
+    t->setPosition({3, 3});
+    TankEngine engine;
+    engine.addTank(t);
+    for (size_t i = 0; i < 1; i++)
+    {
+        engine.refresh();
+    }
+
+    delete t;
+
+}

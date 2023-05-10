@@ -13,6 +13,7 @@ void registSignal();
 Game *game;
 Game::Game(): mQuit(false)
 {
+    srand(time(NULL));
     game = this;
     tankEngine = new TankEngine();
 
@@ -42,7 +43,7 @@ void registSignal() {
 
 void Game::run() {
     Tank *tank1 = new Tank(PLAYER_ID_1 | DOWN, 2);
-    Tank *tank2 = new Tank(PLAYER_ID_2 | DOWN, 2);
+    Tank *tank2 = new Tank(ENERMY_ID_1 | DOWN, 2);
     tank1->setPosition({1, 1});
     tank2->setPosition({36, 1});
     Map *map = new Map(20, 40);

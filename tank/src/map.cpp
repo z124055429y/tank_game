@@ -46,12 +46,15 @@ void Map::addLand(int x, int y, int rows, int cols, int landType) {
         }
     }
 }
+void Map::destroyLand(Position pos) {
+    mFlag[pos.getY()][pos.getX()] = 0;
+}
 
 int Map::touch(Element *origin) {
     int flag = 0;
     Position pos = origin->getPosition();
     Size size = origin->getSize();
-    int touchFlag = LAND_BORDER;
+    int touchFlag = LAND_BORDER | LAND_IRON_WALL | LAND_RIVER | LAND_MUD_WALL;
     for (size_t i = 0; i < size.getRows(); i++) {
         int x = pos.getX() - 1, y = pos.getY() + i;
         if (mFlag[y][x] & touchFlag) {
