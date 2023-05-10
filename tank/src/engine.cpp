@@ -67,11 +67,17 @@ int TankEngine::getTankAction(Tank *tank) {
 bool TankEngine::moveTank(Tank *tank, int action) {
     int flag = 0;
     if (detector != nullptr && mMap != nullptr) {
-        /// TODO: touch行为处理，满足接触条件不触发移动操作
         std::list<Touch*> constraints;
+        // 添加地图约束
         constraints.push_back(mMap);
+        // 添加坦克约束
+        for (auto &&tank : mTanks)
+        {
+            constraints.push_back(tank);
+        }
         flag = detector->touchCheck(tank, constraints);
     }
+    
     
     if (flag & MASK_DIRECTION & action) {
         if (tank->getStatus() & MASK_DIRECTION & action) {

@@ -4,13 +4,14 @@
 #include "base/element.hpp"
 #include "base/painter.hpp"
 #include "action/move.hpp"
+#include "action/touch.hpp"
 
 /**
  * 坦克类
  * 
  * 速度: 10帧
 */
-class Tank: public Element, public Move
+class Tank: public Element, public Move, public Touch
 {
 private:
     Timer mFireTimer;
@@ -31,6 +32,7 @@ public:
     int getHp() { return mHp; }
     bool isFireReady() { return mFireTimer.isReady(); }
     void fireReset() { mFireTimer.reset(); }
+    int touch(Element *origin);
 };
 
 #endif // _TANK_HPP_

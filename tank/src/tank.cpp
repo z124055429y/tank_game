@@ -30,3 +30,21 @@ void Tank::tick(bool manual) {
     mFireTimer.tick(manual);
     Move::tick(manual);
 }
+
+int Tank::touch(Element *origin) {
+    // 判断origin四个方向是否和this接触, 一个方向满足接触条件，另一方向产生重叠，才被视为接触
+    int flag = 0;
+    Position originPos = origin->getPosition();
+    Size originSize = origin->getSize();
+    bool up     = originPos.getY() - mPos.getY() == mSize.getRows();
+    bool down   = originPos.getY() - mPos.getY() == -originSize.getRows();
+    bool left   = originPos.getX() - mPos.getX() == mSize.getCols();
+    bool right  = originPos.getX() - mPos.getX() == -originSize.getCols();
+    bool verticalCollapse =     originPos.getY() - mPos.getY() < mSize.getRows() && originPos.getY() - mPos.getY() > -originSize.getRows();
+    bool horizentalCollapse =   originPos.getX() - mPos.getX() < mSize.getCols() && originPos.getX() - mPos.getX() > -originSize.getCols();
+    if (up && horizentalCollapse) { flag |= UP; }
+    if (down && horizentalCollapse) { flag |= DOWN; }
+    if (left && verticalCollapse) { flag |= LEFT; }
+    if (right && verticalCollapse) { flag |= RIGHT; }
+    return flag;
+}
