@@ -29,3 +29,8 @@ void Generator::freeBullet(Bullet *bullet) {
     delete bullet;
 }
 
+void Generator::freeTank(Tank *tank) {
+    mTanks.remove(tank);
+    delete tank;
+}
+

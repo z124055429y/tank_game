@@ -74,3 +74,23 @@ TEST(DetectTest, CheckBulletBulletCollision) {
 
     // ps: 子弹销毁已经在engine中处理过了
 }
+
+TEST(DetectTest, CheckTankBulletCollision) {
+    TankEngine engine;
+    Map *map = new Map(40,20);
+    Tank *tank = new Tank(PLAYER_ID_1|DOWN, 3);
+    Bullet *bullet = new Bullet(3, 2, DOWN);
+    tank->setPosition({3, 3});
+    engine.bindMap(map);
+    engine.addTank(tank);
+    engine.addBullet(bullet);
+
+    engine.refresh();
+    engine.refresh();
+    engine.refresh();
+    engine.refresh();
+    EXPECT_EQ(2, tank->getHp());
+
+    delete map;
+
+}

@@ -25,6 +25,7 @@ public:
     /// @brief 减少血量, 注意越界处理
     void minusHp(int minusHp);
     void move(int dir);
+    int getHp() { return mHp; }
 };
 
 #endif // _TANK_HPP_

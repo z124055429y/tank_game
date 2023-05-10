@@ -12,6 +12,7 @@ public:
     Bullet(int x, int y, STATUS status);
     ~Bullet();
     void move(int action);
+    int getDamage() { return mDamage; }
 };
 
 #endif // _BULLET_HPP

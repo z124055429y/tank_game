@@ -27,12 +27,32 @@ int Detector::touchCheck(Element *origin, std::list<Touch*> constraints) {
     return flag;
 }
 
-void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bullets, Map *map, std::list<Tank*> &collisionTanks, std::list<Bullet*> &collisionBullets) {
-    // 临时存放要删除的子弹
+void Detector::collisionCheck(std::list<Tank*> tanks, std::list<Bullet*> bullets, Map *map, std::list<Tank*> &collisionTanks, std::list<Bullet*> &collisionBullets) {
+    // 临时存放要删除的元素
     std::set<Bullet*> tmpBullets;
-    // 初始化子弹位置, O(n)
+    std::set<Tank*> tmpTanks;
+    // 地图大小
     Size size = map->getSize();
+
+    // 缓存坦克位置
+    fillSpace(pBitmap, mSize.getRows(), mSize.getCols(), -1);
+    for (auto &&tank : tanks)
+    {
+        Position pos = tank->getPosition();
+        int index = pos.getY() * size.getCols() + pos.getX();
+        Size tankSize = tank->getSize();
+        for (int i = 0; i < tankSize.getRows(); i++)
+        {
+            for (int j = 0; j < tankSize.getCols(); j++)
+            {
+                pBitmap[i + pos.getY()][j + pos.getX()] = index;
+            }
+        }
+    }
+
+    // 初始化元素索引 O(n), 思考: 代码形式上的多重循环是否就意味着时间复杂度的次方（明确问题规模和循环是否有关系）
     std::map<int, std::list<Bullet*> > mapBullets;
+    std::map<int, Tank*> mapTanks;
     for (auto &&bullet : bullets)
     {
         Position pos = bullet->getPosition();
@@ -43,11 +63,21 @@ void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bulle
             mapBullets.insert(std::make_pair(index, std::list<Bullet*>({bullet})));
         }
     }
+    for (auto &&tank : tanks)
+    {
+        Position pos = tank->getPosition();
+        int index = pos.getY() * size.getCols() + pos.getX();
+        mapTanks.insert(std::make_pair(index, tank));
+    }
 
     // 处理多子弹同位置的碰撞 O(n)
     for (auto &&bullet : bullets)
     {
         Position pos = bullet->getPosition();
+
+        // 如果当前碰撞位置恰好是坦克位置, 不作为子弹的碰撞处理（视为子弹和坦克碰撞）
+        if (pBitmap[pos.getY()][pos.getX()] != -1) continue;
+
         int index = pos.getY() * size.getCols() + pos.getX();
         if (mapBullets[index].size() == 1) { continue; }
         for (auto tmp : mapBullets[index])
@@ -58,7 +88,7 @@ void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bulle
     }
     bullets.remove_if([tmpBullets](Bullet * bullet)->bool { return tmpBullets.find(bullet) != tmpBullets.end(); });
 
-    /// TODO: 处理子弹的交错碰撞 O(n)
+    /// 处理子弹的交错碰撞 O(n)
     for (auto &&bullet : bullets)
     {
         Position pos = bullet->getPosition();
@@ -80,8 +110,35 @@ void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bulle
     }
     bullets.remove_if([tmpBullets](Bullet * bullet)->bool { return tmpBullets.find(bullet) != tmpBullets.end(); });
     
+    // 处理子弹和坦克的碰撞 O(n)
+    for (auto &&bullet : bullets)
+    {
+        Position bulletPos = bullet->getPosition();
+        int x = bulletPos.getX(), y = bulletPos.getY();
+        if (pBitmap[y][x] == -1) continue;
+
+        tmpBullets.insert(bullet);
+
+        int tankIndex = pBitmap[y][x];
+        Tank *tank = mapTanks[tankIndex];
+        int hp = tank->getHp();
+        int damage = bullet->getDamage();
+        if (hp > damage) {
+            tank->minusHp(damage);
+        } else {
+            tmpTanks.insert(tank);
+        }
+
+        int bulletIndex = bulletPos.getY() * size.getCols() + bulletPos.getX();
+        mapBullets[bulletIndex].remove(bullet);
+        if (mapBullets[bulletIndex].size() == 0) {
+            mapBullets.erase(bulletIndex);
+        }
+    }
+    tanks.remove_if([tmpTanks](Tank *tank)->bool { return tmpTanks.find(tank) != tmpTanks.end(); });
+    bullets.remove_if([tmpBullets](Bullet *bullet)->bool { return tmpBullets.find(bullet) != tmpBullets.end(); });
     
-    // 检测地图和子弹的碰撞 O(n)
+    // 处理地图和子弹的碰撞 O(n)
     for (auto &&bullet : bullets)
     {
         Position pos = bullet->getPosition();
@@ -90,7 +147,9 @@ void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bulle
         }
     }
     bullets.remove_if([tmpBullets](Bullet * bullet)->bool { return tmpBullets.find(bullet) != tmpBullets.end(); });
+    
     collisionBullets.insert(collisionBullets.begin(), tmpBullets.begin(), tmpBullets.end());
+    collisionTanks.insert(collisionTanks.begin(), tmpTanks.begin(), tmpTanks.end());
 }
 
 Position Detector::getBulletLastPosition(Bullet *bullet) {

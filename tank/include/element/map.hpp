@@ -32,8 +32,6 @@ private:
 public:
     Map(int rows, int cols);
     ~Map();
-    /// @brief 清空画布
-    void clear();
     int* operator[](const int pos);
     int touch(Element *origin);
 };

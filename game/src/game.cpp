@@ -41,10 +41,13 @@ void registSignal() {
 }
 
 void Game::run() {
-    Tank *tank = new Tank(PLAYER_ID_1 | DOWN, 2);
-    tank->setPosition({3, 3});
+    Tank *tank1 = new Tank(PLAYER_ID_1 | DOWN, 2);
+    Tank *tank2 = new Tank(PLAYER_ID_2 | DOWN, 2);
+    tank1->setPosition({3, 3});
+    tank2->setPosition({9, 9});
     Map *map = new Map(20, 40);
-    tankEngine->addTank(tank);
+    tankEngine->addTank(tank1);
+    tankEngine->addTank(tank2);
     tankEngine->bindMap(map);
     while (!mQuit) {
         char ch = getch();
@@ -54,7 +57,8 @@ void Game::run() {
         if (cmd == 0) continue;
         mQuit = tankEngine->handle(cmd);
     }
-    delete tank;
+    // delete tank1;
+    // delete tank2;
     delete map;
 }
 
@@ -78,6 +82,9 @@ void Game::render() {
             }
         }
     }
+
+    mvprintw(0, 50, "Tank count = %d", tankEngine->getTanks().size());
+    mvprintw(1, 50, "Bullet count = %d", tankEngine->getBullets().size());
 }
 
 void alarm_action(int signo)

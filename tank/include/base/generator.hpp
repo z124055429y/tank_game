@@ -6,10 +6,16 @@
 #include "base/detector.hpp"
 #include "element/bullet.hpp"
 
+/**
+ * 生成器
+ * 
+ * 优化: 可以用set容器代替list容器, 进而更快的删除列表
+*/
 class Generator
 {
 private:
-    std::list<Bullet*> mBullets;
+    std::list<Bullet*>  mBullets;
+    std::list<Tank*>    mTanks;
     Detector *mDetector;
 public:
     Generator(/* args */);
@@ -18,6 +24,7 @@ public:
     void freeDetector(Detector **detector);
     Bullet* allocBullet(int x, int y, int status);
     void freeBullet(Bullet *bullet);
+    void freeTank(Tank *tank);
 };
 
 

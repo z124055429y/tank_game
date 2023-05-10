@@ -3,7 +3,8 @@
 Map::Map(int rows, int cols): Element(rows, cols)
 {
     mFlag = allocSpace(rows, cols);
-    clear();
+    clearSpace(mFlag, rows, cols);
+    // clear();
     initBorder();
 }
 
@@ -14,18 +15,6 @@ Map::~Map()
 
 int* Map::operator[](const int pos) {
     return mFlag[pos];
-}
-
-void Map::clear() {
-    int rows = mSize.getRows();
-    int cols = mSize.getCols();
-    for (int i = 0; i < rows; i++)
-    {
-        for (int j = 0; j < cols; j++)
-        {
-            mFlag[i][j] = 0;
-        }
-    }
 }
 
 void Map::initBorder() {
