@@ -43,9 +43,13 @@ void registSignal() {
 void Game::run() {
     Tank *tank1 = new Tank(PLAYER_ID_1 | DOWN, 2);
     Tank *tank2 = new Tank(PLAYER_ID_2 | DOWN, 2);
-    tank1->setPosition({3, 3});
-    tank2->setPosition({9, 9});
+    tank1->setPosition({1, 1});
+    tank2->setPosition({36, 1});
     Map *map = new Map(20, 40);
+    map->addLand(5, 5, 2, 4, LAND_GRASS);
+    map->addLand(10, 5, 2, 4, LAND_MUD_WALL);
+    map->addLand(15, 5, 2, 4, LAND_IRON_WALL);
+    map->addLand(20, 5, 2, 4, LAND_RIVER);
     tankEngine->addTank(tank1);
     tankEngine->addTank(tank2);
     tankEngine->bindMap(map);

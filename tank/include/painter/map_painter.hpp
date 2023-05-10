@@ -24,8 +24,12 @@ public:
             {
                 switch (m[i][j] & MASK_LAND)
                 {
-                    case FLAG_BORDER: bitmap[i][j] = '#'; break;
-                    default: bitmap[i][j] = ' '; break;
+                    case LAND_BORDER:       bitmap[i][j] = '#'; break;
+                    case LAND_IRON_WALL:    bitmap[i][j] = '#'; break;
+                    case LAND_GRASS:        bitmap[i][j] = 'Y'; break;
+                    case LAND_RIVER:        bitmap[i][j] = '~'; break;
+                    case LAND_MUD_WALL:     bitmap[i][j] = '^'; break;
+                    default:                bitmap[i][j] = ' '; break;
                 }
             }
         }

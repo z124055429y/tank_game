@@ -4,10 +4,10 @@
 
 TEST(MapTest, SetMap) {
     Map map(20,40);
-    EXPECT_EQ(FLAG_BORDER, map[0][0] & MASK_LAND);
-    EXPECT_EQ(FLAG_BORDER, map[19][0] & MASK_LAND);
-    EXPECT_EQ(FLAG_BORDER, map[0][39] & MASK_LAND);
-    EXPECT_EQ(FLAG_BORDER, map[19][39] & MASK_LAND);
+    EXPECT_EQ(LAND_BORDER, map[0][0] & MASK_LAND);
+    EXPECT_EQ(LAND_BORDER, map[19][0] & MASK_LAND);
+    EXPECT_EQ(LAND_BORDER, map[0][39] & MASK_LAND);
+    EXPECT_EQ(LAND_BORDER, map[19][39] & MASK_LAND);
 }
 
 TEST(MapTest, DrawMap) {

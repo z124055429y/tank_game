@@ -24,22 +24,34 @@ void Map::initBorder() {
     // 初始化边界
     for (int i = 0; i < rows; i++)
     {
-        mFlag[i][0] = (mFlag[i][0] & MASK_LAND) | FLAG_BORDER;
-        mFlag[i][cols - 1] = (mFlag[i][cols - 1] & MASK_LAND) | FLAG_BORDER;
+        mFlag[i][0] = (mFlag[i][0] & MASK_LAND) | LAND_BORDER;
+        mFlag[i][cols - 1] = (mFlag[i][cols - 1] & MASK_LAND) | LAND_BORDER;
     }
     for (int i = 0; i < cols; i++)
     {
-        mFlag[0][i] = (mFlag[0][i] & MASK_LAND) | FLAG_BORDER;
-        mFlag[rows - 1][i] = (mFlag[rows - 1][i] & MASK_LAND) | FLAG_BORDER;
+        mFlag[0][i] = (mFlag[0][i] & MASK_LAND) | LAND_BORDER;
+        mFlag[rows - 1][i] = (mFlag[rows - 1][i] & MASK_LAND) | LAND_BORDER;
     }
     
+}
+
+void Map::addLand(int x, int y, int rows, int cols, int landType) {
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            if (mFlag[y + i][x + j] & MASK_LAND) continue;
+            mFlag[y + i][x + j] &= MASK_LAND;
+            mFlag[y + i][x + j] |= landType;
+        }
+    }
 }
 
 int Map::touch(Element *origin) {
     int flag = 0;
     Position pos = origin->getPosition();
     Size size = origin->getSize();
-    int touchFlag = FLAG_BORDER;
+    int touchFlag = LAND_BORDER;
     for (size_t i = 0; i < size.getRows(); i++) {
         int x = pos.getX() - 1, y = pos.getY() + i;
         if (mFlag[y][x] & touchFlag) {

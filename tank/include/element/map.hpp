@@ -15,11 +15,11 @@
 */
 
 #define MASK_LAND       (0xff)
-#define FLAG_BORDER     (1)
-#define FLAG_IRON_WALL  (1<<1)
-#define FLAG_MUD_WALL   (1<<2)
-#define FLAG_RIVER      (1<<3)
-#define FLAG_GRASS      (1<<4)
+#define LAND_BORDER     (1)
+#define LAND_IRON_WALL  (1<<1)
+#define LAND_MUD_WALL   (1<<2)
+#define LAND_RIVER      (1<<3)
+#define LAND_GRASS      (1<<4)
 
 /**
  * 地图类
@@ -34,6 +34,7 @@ public:
     ~Map();
     int* operator[](const int pos);
     int touch(Element *origin);
+    void addLand(int x, int y, int rows, int cols, int landType);
 };
 
 

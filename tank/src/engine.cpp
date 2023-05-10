@@ -72,8 +72,15 @@ bool TankEngine::moveTank(Tank *tank, int action) {
         constraints.push_back(mMap);
         flag = detector->touchCheck(tank, constraints);
     }
-
-    if (flag & MASK_DIRECTION & action) return false;
+    
+    if (flag & MASK_DIRECTION & action) {
+        if (tank->getStatus() & MASK_DIRECTION & action) {
+            return false;
+        } else {
+            tank->setDirection(action);
+            return true;
+        }
+    }
     tank->move(action);
 
     // 刷新定时器
@@ -219,6 +226,9 @@ void TankEngine::bindMap(Map *map) {
 
 std::list<Element*> TankEngine::getElements() {
     std::list<Element*> elems;
+    if (mMap != nullptr) {
+        elems.push_back(mMap);
+    }
     for (auto &&tank : mTanks)
     {
         elems.push_back(tank);
@@ -226,9 +236,6 @@ std::list<Element*> TankEngine::getElements() {
     for (auto &&bullet : mBullets)
     {
         elems.push_back(bullet);
-    }
-    if (mMap != nullptr) {
-        elems.push_back(mMap);
     }
 
     return elems;

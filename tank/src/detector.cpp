@@ -143,7 +143,7 @@ void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bulle
     for (auto &&bullet : bullets)
     {
         Position pos = bullet->getPosition();
-        if ((*map)[pos.getY()][pos.getX()] == FLAG_BORDER) {
+        if ((*map)[pos.getY()][pos.getX()] == LAND_BORDER) {
             tmpBullets.insert(bullet);
         }
     }
