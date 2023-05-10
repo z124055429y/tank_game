@@ -20,7 +20,7 @@ public:
     ~Detector();
     int touchCheck(Element *element, std::list<Touch*> constraints);
     /// @brief 碰撞检测
-    void collisionCheck(std::list<Tank*> tanks, std::list<Bullet*> bullets, Map *map,
+    void collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bullets, Map *map,
                         std::list<Tank*> &collisionTanks, std::list<Bullet*> &collisionBullets);
 };
 

@@ -27,7 +27,7 @@ int Detector::touchCheck(Element *origin, std::list<Touch*> constraints) {
     return flag;
 }
 
-void Detector::collisionCheck(std::list<Tank*> tanks, std::list<Bullet*> bullets, Map *map, std::list<Tank*> &collisionTanks, std::list<Bullet*> &collisionBullets) {
+void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bullets, Map *map, std::list<Tank*> &collisionTanks, std::list<Bullet*> &collisionBullets) {
     // 临时存放要删除的元素
     std::set<Bullet*> tmpBullets;
     std::set<Tank*> tmpTanks;
@@ -78,6 +78,7 @@ void Detector::collisionCheck(std::list<Tank*> tanks, std::list<Bullet*> bullets
         // 如果当前碰撞位置恰好是坦克位置, 不作为子弹的碰撞处理（视为子弹和坦克碰撞）
         if (pBitmap[pos.getY()][pos.getX()] != -1) continue;
 
+        // 同位置只有一颗子弹, 不处理
         int index = pos.getY() * size.getCols() + pos.getX();
         if (mapBullets[index].size() == 1) { continue; }
         for (auto tmp : mapBullets[index])

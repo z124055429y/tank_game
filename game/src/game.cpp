@@ -17,7 +17,7 @@ Game::Game(): mQuit(false)
     tankEngine = new TankEngine();
 
     registSignal();
-    Timer::startTimer();
+    SystemTimer::startTimer();
     initscr();  // 初始化ncurses
     noecho();   // 无回显
     curs_set(0);// 无光标
@@ -26,7 +26,7 @@ Game::Game(): mQuit(false)
 
 Game::~Game()
 {
-    Timer::stopTimer();
+    SystemTimer::stopTimer();
     endwin();   // 结束ncurses
 
     delete tankEngine;

@@ -77,14 +77,17 @@ bool TankEngine::moveTank(Tank *tank, int action) {
     tank->move(action);
 
     // 刷新定时器
-    tank->action();
+    tank->reset();
     return true;
 }
 
 void TankEngine::fireBullet(Tank *tank, int action) {
     // 行为中没有开火，跳过
     if ((action & FIRE) == 0) return;
-    // 行为中有开火
+    // 坦克没有准备好开火
+    if (!tank->isFireReady()) return;
+    
+    tank->fireReset();
     Size size = tank->getSize();
     Position pos = tank->getPosition();
     int status = tank->getStatus();
@@ -181,12 +184,10 @@ void TankEngine::handleCollision() {
     detector->collisionCheck(mTanks, mBullets, mMap, mTmpTanks, mTmpBullets);
     for (auto &&bullet : mTmpBullets)
     {
-        mBullets.remove(bullet);
         generator.freeBullet(bullet);
     }
     for (auto &&tank : mTmpTanks)
     {
-        mTanks.remove(tank);
         generator.freeTank(tank);
     }
 

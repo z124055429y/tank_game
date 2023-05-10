@@ -2,7 +2,7 @@
 
 #include "timer.hpp"
 
-void Timer::stopTimer()
+void SystemTimer::stopTimer()
 {
     struct itimerval timer;
     timer.it_interval.tv_sec = 0;
@@ -12,7 +12,7 @@ void Timer::stopTimer()
     setitimer(ITIMER_REAL, &timer, NULL);
 }
 
-bool Timer::startTimer()
+bool SystemTimer::startTimer()
 {
     struct itimerval timer;
     timer.it_interval.tv_sec = 0;

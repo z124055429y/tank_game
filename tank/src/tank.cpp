@@ -2,7 +2,7 @@
 #include <limits.h>
 #include "element/tank.hpp"
 
-Tank::Tank(STATUS status, int hp): Element(0, 0, 3, 3, status), Move(3), mHp(hp) {}
+Tank::Tank(STATUS status, int hp): Element(0, 0, 3, 3, status), Move(3), mFireTimer(4, 0), mHp(hp) {}
 Tank::~Tank() {}
 
 bool Tank::isDead() {
@@ -25,4 +25,8 @@ void Tank::move(int dir) {
     // 更改坦克方向
     mStatus &= ~MASK_DIRECTION;
     mStatus |= dir;
+}
+void Tank::tick(bool manual) {
+    mFireTimer.tick(manual);
+    Move::tick(manual);
 }
