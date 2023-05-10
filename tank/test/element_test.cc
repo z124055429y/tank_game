@@ -2,7 +2,7 @@
 
 #include "base/element.hpp"
 
-TEST(ElementTest, InitElement) {
+TEST(ElementTest, SetElement) {
   Element *e = new Element(1, 2, 3, 4, UP);
   Position pos = e->getPosition();
   Size size = e->getSize();

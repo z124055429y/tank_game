@@ -181,9 +181,11 @@ void TankEngine::handleCollision() {
     detector->collisionCheck(mTanks, mBullets, mMap, mTmpTanks, mTmpBullets);
     for (auto &&bullet : mTmpBullets)
     {
-        mBullets.remove(bullet);
         generator.freeBullet(bullet);
     }
+
+    mTmpTanks.clear();
+    mTmpBullets.clear();
 }
 
 std::list<Tank*> TankEngine::getTanks() {
