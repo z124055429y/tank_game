@@ -11,9 +11,11 @@
 #include "element/tank.hpp"
 #include "element/bullet.hpp"
 #include "element/map.hpp"
+#include "element/state.hpp"
 #include "painter/tank_painter.hpp"
 #include "painter/bullet_painter.hpp"
 #include "painter/map_painter.hpp"
+#include "painter/state_painter.hpp"
 
 /**
  * 坦克游戏逻辑处理
@@ -32,9 +34,11 @@ private:
     std::list<Bullet*>  mBullets;       // 子弹列表
     std::list<Bullet*>  mTmpBullets;    // 临时子弹列表
     Map *mMap;
+    State *mState;
     TankPainter     tankPainter;
     BulletPainter   bulletPainter;
     MapPainter      mapPainter;
+    StatePainter    statePainter;
     Generator generator;
     Detector *detector;
     
@@ -49,6 +53,7 @@ private:
     void drawBullet(Bullet* bullet);
 
     void updateMap();
+    void updateState();
     void handleCollision();
     void tickMoveElement();
 public:
@@ -61,13 +66,14 @@ public:
     /// @return 是否退出游戏
     bool handle(int cmd);
     /// @brief 获取绘制元素
-    /// @return
+    /// @return 获取绘制元素
     std::list<Element*> getElements();
 
     /// 以下代码主要用来测试
     void addTank(Tank *tank);
     void addBullet(Bullet *bullet);
     void bindMap(Map *map);
+    void bindState(State *state);
     std::list<Tank*>    getTanks();
     std::list<Bullet*>  getBullets();
     std::vector<int>    getCmd();

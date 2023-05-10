@@ -3,7 +3,7 @@
 
 #include "engine.hpp"
 
-TankEngine::TankEngine(): mCmds(10, 0), mMap(nullptr), detector(nullptr) {}
+TankEngine::TankEngine(): mCmds(10, 0), mMap(nullptr), detector(nullptr), mState(nullptr) {}
 TankEngine::~TankEngine() {}
 
 bool TankEngine::handle(int command) {
@@ -35,6 +35,8 @@ void TankEngine::refresh() {
     updateMap();
     // 处理碰撞
     handleCollision();
+    // 更新状态
+    updateState();
     // tick可移动的元素
     tickMoveElement();
 }
@@ -130,7 +132,7 @@ void TankEngine::fireBullet(Tank *tank, int action) {
     }
     int damage = tank->getBulletDamage();
     int speed = tank->getBulletSpeed();
-    Bullet *bullet = generator.allocBullet(x, y, status & MASK_DIRECTION, damage, speed);
+    Bullet *bullet = generator.allocBullet(x, y, status & (MASK_PLAYER_ID | MASK_DIRECTION), damage, speed);
     drawBullet(bullet);
     mBullets.push_back(bullet);
 }
@@ -206,9 +208,18 @@ void TankEngine::updateMap() {
 
 /// 地图部分结束
 
+/// 状态部分开始
+
+void TankEngine::updateState() {
+    if (mState == nullptr) return;
+    statePainter.draw(mState);
+}
+
+/// 状态部分结束
+
 void TankEngine::handleCollision() {
     if (detector == nullptr || mMap == nullptr) return;
-    detector->collisionCheck(mTanks, mBullets, mMap, mTmpTanks, mTmpBullets);
+    detector->collisionCheck(mTanks, mBullets, mMap, mTmpTanks, mTmpBullets, mState);
     for (auto &&bullet : mTmpBullets)
     {
         generator.freeBullet(bullet);
@@ -244,10 +255,17 @@ void TankEngine::bindMap(Map *map) {
     detector = generator.allocDetector(size);
 }
 
+void TankEngine::bindState(State *state) {
+    mState = state;
+}
+
 std::list<Element*> TankEngine::getElements() {
     std::list<Element*> elems;
     if (mMap != nullptr) {
         elems.push_back(mMap);
+    }
+    if (mState != nullptr) {
+        elems.push_back(mState);
     }
     for (auto &&tank : mTanks)
     {

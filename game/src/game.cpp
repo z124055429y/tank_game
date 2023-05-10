@@ -44,6 +44,7 @@ void registSignal() {
 void Game::run() {
     Tank *tank1 = new Tank(PLAYER_ID_1 | DOWN, 2);
     Tank *tank2 = new Tank(ENERMY_ID_1 | DOWN, 2);
+    State *state = new State(50, 4, 3, 20, 1);
     tank1->setPosition({1, 1});
     tank2->setPosition({36, 1});
     Map *map = new Map(20, 40);
@@ -54,6 +55,7 @@ void Game::run() {
     tankEngine->addTank(tank1);
     tankEngine->addTank(tank2);
     tankEngine->bindMap(map);
+    tankEngine->bindState(state);
     while (!mQuit) {
         char ch = getch();
         if (ch == 'q') { mQuit = true; break; }

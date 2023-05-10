@@ -27,7 +27,8 @@ int Detector::touchCheck(Element *origin, std::list<Touch*> constraints) {
     return flag;
 }
 
-void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bullets, Map *map, std::list<Tank*> &collisionTanks, std::list<Bullet*> &collisionBullets) {
+void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bullets, Map *map, 
+        std::list<Tank*> &collisionTanks, std::list<Bullet*> &collisionBullets, State *state) {
     // 临时存放要删除的元素
     std::set<Bullet*> tmpBullets;
     std::set<Tank*> tmpTanks;
@@ -127,6 +128,7 @@ void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bulle
         if (hp > damage) {
             tank->minusHp(damage);
         } else {
+            updateScore(bullet, 10, state);
             tmpTanks.insert(tank);
         }
 
@@ -155,6 +157,18 @@ void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bulle
     
     collisionBullets.insert(collisionBullets.begin(), tmpBullets.begin(), tmpBullets.end());
     collisionTanks.insert(collisionTanks.begin(), tmpTanks.begin(), tmpTanks.end());
+}
+
+void Detector::updateScore(Bullet* bullet, int score, State *state) {
+    int playerIndex = -1;
+    switch (bullet->getStatus() & MASK_PLAYER_ID)
+    {
+    case PLAYER_ID_1: playerIndex = 0; break;
+    case PLAYER_ID_2: playerIndex = 1; break;
+    default: break;
+    }
+    if (playerIndex == -1) return;
+    state->addScore(playerIndex, score);
 }
 
 Position Detector::getBulletLastPosition(Bullet *bullet) {

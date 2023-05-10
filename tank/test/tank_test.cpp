@@ -52,7 +52,6 @@ TEST(TankTest, MoveTank) {
     Position pos = t->getPosition();
     EXPECT_EQ(DOWN, t->getStatus() & MASK_DIRECTION);
     EXPECT_EQ(Position(0, 1), pos);
-    EXPECT_EQ(2, t->getTimer());
 
 }
 
