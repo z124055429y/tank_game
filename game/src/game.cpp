@@ -5,7 +5,6 @@
 
 #include "game.hpp"
 #include "timer.hpp"
-#include "handler.hpp"
 
 void alarm_action(int signo);
 void registSignal();
@@ -42,31 +41,16 @@ void registSignal() {
 }
 
 void Game::run() {
-    Tank *tank1 = new Tank(PLAYER_ID_1 | DOWN, 2);
-    Tank *tank2 = new Tank(ENERMY_ID_1 | DOWN, 2);
-    State *state = new State(50, 4, 3, 20, 1);
-    tank1->setPosition({1, 1});
-    tank2->setPosition({36, 1});
-    Map *map = new Map(20, 40);
-    map->addLand(5, 5, 2, 4, LAND_GRASS);
-    map->addLand(10, 5, 2, 4, LAND_MUD_WALL);
-    map->addLand(15, 5, 2, 4, LAND_IRON_WALL);
-    map->addLand(20, 5, 2, 4, LAND_RIVER);
-    tankEngine->addTank(tank1);
-    tankEngine->addTank(tank2);
-    tankEngine->bindMap(map);
-    tankEngine->bindState(state);
+    tankEngine->init();
+    
     while (!mQuit) {
         char ch = getch();
         if (ch == 'q') { mQuit = true; break; }
         // 通过输入产生命令
-        int cmd = Handler::generateCommand(ch);
-        if (cmd == 0) continue;
-        mQuit = tankEngine->handle(cmd);
+        mQuit = tankEngine->input(ch);
     }
-    // delete tank1;
-    // delete tank2;
-    delete map;
+
+    tankEngine->destroy();
 }
 
 void Game::refresh() {
@@ -89,9 +73,6 @@ void Game::render() {
             }
         }
     }
-
-    mvprintw(0, 50, "Tank count = %d", tankEngine->getTanks().size());
-    mvprintw(1, 50, "Bullet count = %d", tankEngine->getBullets().size());
 }
 
 void alarm_action(int signo)

@@ -1,17 +1,15 @@
 #include <gtest/gtest.h>
 
-#include "engine.hpp"
+#include "stage/game_stage.hpp"
 
 TEST(StateTest, DrawState) {
-    TankEngine engine;
+    GameStage stage;
     State *state = new State(0, 0, 3, 20, 1);
-    engine.bindState(state);
+    stage.bindState(state);
 
-    engine.refresh();
+    stage.refresh();
     int rows, cols;
     int **bitmap = state->getBitmap(rows, cols);
     EXPECT_EQ('P', bitmap[0][0]);
-
-    delete state;
 
 }

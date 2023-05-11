@@ -24,6 +24,7 @@ public:
     void freeDetector(Detector **detector);
     Bullet* allocBullet(int x, int y, STATUS status, int damage, int speed);
     void freeBullet(Bullet *bullet);
+    void allocTank();
     void freeTank(Tank *tank);
 };
 

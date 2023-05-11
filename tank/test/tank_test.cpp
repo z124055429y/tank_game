@@ -1,8 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "engine.hpp"
-#include "element/tank.hpp"
-#include "painter/tank_painter.hpp"
+#include "scene/game_scene.hpp"
 
 TEST(TankTest, SetTank) {
     Tank t(RIGHT, 4);
@@ -31,22 +29,22 @@ TEST(TankTest, DrawTank) {
 
 TEST(TankTest, MoveTank) {
     Tank *t = new Tank(PLAYER_ID_1 | UP, 4);
-    TankEngine engine;
+    GameStage stage;
 
     // 初始化timer为0
     EXPECT_EQ(0, t->getTimer());
     
     // 添加坦克
-    engine.addTank(t);
-    EXPECT_EQ(1, engine.getTanks().size());
+    stage.addTank(t);
+    EXPECT_EQ(1, stage.getTanks().size());
 
     // 玩家1向下
-    engine.handle(PLAYER_ID_1 | DOWN);
-    EXPECT_EQ(PLAYER_ID_1 | DOWN, engine.getCmd()[0]);
+    stage.handle(PLAYER_ID_1 | DOWN);
+    EXPECT_EQ(PLAYER_ID_1 | DOWN, stage.getCmd()[0]);
 
     // 刷新一帧
-    engine.refresh();
-    EXPECT_EQ(PLAYER_ID_1, engine.getCmd()[0]);
+    stage.refresh();
+    EXPECT_EQ(PLAYER_ID_1, stage.getCmd()[0]);
 
     // 检查位置
     Position pos = t->getPosition();
@@ -58,13 +56,13 @@ TEST(TankTest, MoveTank) {
 TEST(TankTest, Fire) {
     Tank *t = new Tank(PLAYER_ID_1 | RIGHT, 4);
     t->setPosition({3, 3});
-    TankEngine engine;
-    engine.addTank(t);
+    GameStage stage;
+    stage.addTank(t);
 
-    engine.handle(PLAYER_ID_1 | FIRE);
+    stage.handle(PLAYER_ID_1 | FIRE);
 
-    engine.refresh();
-    Bullet *b = engine.getBullets().front();
+    stage.refresh();
+    Bullet *b = stage.getBullets().front();
     EXPECT_EQ(Position(6, 4), b->getPosition());
 
     delete t;
@@ -73,11 +71,11 @@ TEST(TankTest, Fire) {
 TEST(TankTest, SetEnermyTank) {
     Tank *t = new Tank(ENERMY_ID_1 | RIGHT, 4);
     t->setPosition({3, 3});
-    TankEngine engine;
-    engine.addTank(t);
+    GameStage stage;
+    stage.addTank(t);
     for (size_t i = 0; i < 1; i++)
     {
-        engine.refresh();
+        stage.refresh();
     }
 
     delete t;

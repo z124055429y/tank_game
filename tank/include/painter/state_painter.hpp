@@ -27,6 +27,7 @@ public:
                 bitmap[i][j] = p[j];
             }
         }
+        free(p);
     }
 };
 

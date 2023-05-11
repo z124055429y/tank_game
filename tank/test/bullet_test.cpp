@@ -1,7 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "engine.hpp"
-#include "element/bullet.hpp"
+#include "stage/game_stage.hpp"
 
 TEST(BulletTest, SetBullet) {
     Bullet *b = new Bullet(3, 3, RIGHT);
@@ -12,14 +11,14 @@ TEST(BulletTest, SetBullet) {
 
 TEST(BulletTest, UpdateBullet) {
     Bullet b(3, 3, DOWN);
-    TankEngine engine;
-    engine.addBullet(&b);
+    GameStage stage;
+    stage.addBullet(&b);
 
-    engine.refresh();
-    engine.refresh();
-    engine.refresh();
+    stage.refresh();
+    stage.refresh();
+    stage.refresh();
     EXPECT_EQ(Position(3, 3), b.getPosition());
 
-    engine.refresh();
+    stage.refresh();
     EXPECT_EQ(Position(3, 4), b.getPosition());
 }

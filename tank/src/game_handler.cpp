@@ -1,9 +1,9 @@
 #include <string.h>
 
-#include "engine.hpp"
-#include "handler.hpp"
+#include "base/direction.hpp"
+#include "handler/game_handler.hpp"
 
-int Handler::generateCommand(char op) {
+int GameHandler::generateCommand(char op) {
     int flag = 0;
     if (strchr("wasdc", op)) {
         flag |= PLAYER_ID_1;
