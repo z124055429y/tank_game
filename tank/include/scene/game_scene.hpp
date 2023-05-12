@@ -13,7 +13,7 @@ public:
     GameScene();
     ~GameScene();
     void init();
-    bool input(int ch);
+    int input(int ch);
     void refresh();
     std::list<Element*> getElements();
 };

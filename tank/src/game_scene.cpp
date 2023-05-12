@@ -17,7 +17,7 @@ void GameScene::init() {
     // stage->load("/Users/zhangyue/Project/c_languague/tank1/tank/res/tmp.txt");
 }
     
-bool GameScene::input(int ch) {
+int GameScene::input(int ch) {
     int cmd = GameHandler::generateCommand(ch);
     if (cmd == 0) return false;
     return stage->handle(cmd);

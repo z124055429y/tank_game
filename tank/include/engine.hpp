@@ -29,7 +29,7 @@
 class TankEngine
 {
 private:
-    GameScene *scene;
+    std::list<Scene*> mScene;
 public:
     TankEngine();
     ~TankEngine();
