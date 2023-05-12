@@ -3,6 +3,9 @@
 GameScene::GameScene(): pStage(nullptr) {
 }
 
+GameScene::GameScene(std::vector<std::string> paths): pStage(nullptr), mStagePaths(paths) {
+}
+
 GameScene::~GameScene() {
     delete pStage;
 }
@@ -13,11 +16,15 @@ std::list<Element*> GameScene::getElements() {
 }
 
 void GameScene::init() {
-    mStagePaths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage1.txt");
-    mStagePaths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage2.txt");
+    State *state = new State(90, 4, 3, 20, 1);
+    mState = state;
 }
     
 int GameScene::input(int ch) {
+    if (ch == 'S') {
+        IO::save("/Users/zhangyue/Project/c_languague/tank1/tank/res/tmp.txt", pStage);
+        return POP_SCENE_GAME;
+    }
     int cmd = GameHandler::generateCommand(ch);
     if (cmd == 0) return false;
     return pStage->handle(cmd);
@@ -35,6 +42,7 @@ void GameScene::refresh() {
         }
         pStage = new GameStage();
         pStage->load(mStagePaths[curIndex]);
+        pStage->bindState(mState);
         curIndex++;
     }
 }

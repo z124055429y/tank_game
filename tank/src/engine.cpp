@@ -27,12 +27,31 @@ bool TankEngine::input(int op) {
     Scene *scene = mScene.back();
     int cmd = scene->input(op);
     Scene *pushScene = nullptr;
+    
+    std::vector<std::string> paths;
     switch (cmd & MASK_PUSH_SCENE)
     {
-    case PUSH_SCENE_GAME: pushScene = new GameScene(); break;
+    case PUSH_SCENE_GAME:
+        paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage1.txt");
+        paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage2.txt");
+        pushScene = new GameScene(paths);
+        pushScene->init();
+        break;
+    case PUSH_RESTORE_GAME:
+        paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/tmp.txt");
+        paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage1.txt");
+        paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage2.txt");
+        pushScene = new GameScene(paths);
+        pushScene->init();
+        break;
+    }
+    switch (cmd & MASK_POP_SCENE)
+    {
+    case POP_SCENE_GAME:
+        mScene.pop_back();
+        break;
     }
     if (pushScene != nullptr) {
-        pushScene->init();
         mScene.push_back(pushScene);
     }
 

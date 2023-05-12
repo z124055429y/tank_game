@@ -14,6 +14,7 @@ void StartScene::init() {
     items.push_back("Welcome to Tank Game");
     items.push_back("enter [s] to start game");
     items.push_back("enter [q] to quit game");
+    items.push_back("enter [r] to restore game");
 
     mMenu = new Menu(5, 5, items);
 }
@@ -21,6 +22,8 @@ void StartScene::init() {
 int StartScene::input(int ch) {
     if (ch == 's') {
         return PUSH_SCENE_GAME;
+    } else if (ch = 'r') {
+        return PUSH_RESTORE_GAME;
     }
     return false;
 }

@@ -7,6 +7,7 @@
 constexpr int MASK_PUSH_SCENE   = 0xff;
 constexpr int PUSH_SCENE_START  = 1;
 constexpr int PUSH_SCENE_GAME   = 1 << 1;
+constexpr int PUSH_RESTORE_GAME = 1 << 2;
 constexpr int MASK_POP_SCENE    = 0xff00;
 constexpr int POP_SCENE_START   = 1 << (0 + 8);
 constexpr int POP_SCENE_GAME    = 1 << (1 + 8);

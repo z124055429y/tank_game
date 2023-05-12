@@ -16,8 +16,6 @@ void GameStage::init() {
     mDetector = detector;
     Map *map = new Map(40, 80);
     mMap = map;
-    // State *state = new State(90, 4, 3, 20, 1);
-    // mState = state;
 
     Tank *tank1 = new Tank(PLAYER_ID_1 | DOWN, 2);
     Tank *tank2 = new Tank(ENERMY_ID_1 | DOWN, 2);

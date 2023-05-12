@@ -4,15 +4,18 @@
 #include "base/scene.hpp"
 #include "handler/game_handler.hpp"
 #include "stage/game_stage.hpp"
+#include "element/state.hpp"
 
 class GameScene: public Scene
 {
 private:
+    State *mState;
     std::vector<std::string> mStagePaths;
     GameStage *pStage;
     int curIndex = 0;
 public:
     GameScene();
+    GameScene(std::vector<std::string> paths);
     ~GameScene();
     void init();
     int input(int ch);
