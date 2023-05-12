@@ -128,7 +128,9 @@ void Detector::collisionCheck(std::list<Tank*> &tanks, std::list<Bullet*> &bulle
         if (hp > damage) {
             tank->minusHp(damage);
         } else {
-            updateScore(bullet, 10, state);
+            if (state != nullptr) {
+                updateScore(bullet, 10, state);
+            }
             tmpTanks.insert(tank);
         }
 
