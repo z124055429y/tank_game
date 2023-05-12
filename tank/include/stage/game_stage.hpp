@@ -66,13 +66,16 @@ public:
     /// @brief 获取绘制元素
     /// @return 获取绘制元素
     std::list<Element*> getElements();
+    /// 当前关卡是否结束
+    bool isEnd() { return mTanks.size() == 1; }
 
-    /// 以下代码主要用来测试
     void addTank(Tank *tank);
     void addBullet(Bullet *bullet);
     void bindMap(Map *map);
     void bindDetector(Detector *detector);
     void bindState(State *state);
+    
+    /// 以下代码主要用来测试
     std::list<Tank*>    getTanks() { return mTanks; }
     std::list<Bullet*>  getBullets() { return mBullets; }
     std::vector<int>    getCmd() { return mCmds; };

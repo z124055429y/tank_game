@@ -16,20 +16,20 @@ void GameStage::init() {
     mDetector = detector;
     Map *map = new Map(40, 80);
     mMap = map;
-    State *state = new State(90, 4, 3, 20, 1);
-    mState = state;
+    // State *state = new State(90, 4, 3, 20, 1);
+    // mState = state;
 
     Tank *tank1 = new Tank(PLAYER_ID_1 | DOWN, 2);
-    // Tank *tank2 = new Tank(ENERMY_ID_1 | DOWN, 2);
+    Tank *tank2 = new Tank(ENERMY_ID_1 | DOWN, 2);
     tank1->setPosition({1, 1});
-    // tank2->setPosition({36, 1});
+    tank2->setPosition({36, 1});
     mMap->addLand(5, 5, 2, 4, LAND_GRASS);
     mMap->addLand(10, 5, 2, 4, LAND_MUD_WALL);
     mMap->addLand(15, 5, 2, 4, LAND_IRON_WALL);
     mMap->addLand(20, 5, 2, 4, LAND_RIVER);
 
     mTanks.push_back(tank1);
-    // mTanks.push_back(tank2);
+    mTanks.push_back(tank2);
 }
 
 bool GameStage::handle(int command) {

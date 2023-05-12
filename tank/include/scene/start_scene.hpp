@@ -20,6 +20,7 @@ public:
     void init();
     int input(int ch);
     void refresh();
+    bool isEnd() { return false; }
     std::list<Element*> getElements();
 };
 

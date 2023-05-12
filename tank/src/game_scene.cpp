@@ -1,28 +1,40 @@
 #include "scene/game_scene.hpp"
 
-GameScene::GameScene() {
-    stage = new GameStage();
+GameScene::GameScene(): pStage(nullptr) {
 }
 
 GameScene::~GameScene() {
-    delete stage;
+    delete pStage;
 }
 
 std::list<Element*> GameScene::getElements() {
-    return stage->getElements();
+    if (pStage == nullptr) return {};
+    return pStage->getElements();
 }
 
 void GameScene::init() {
-    stage->init();
-    // stage->load("/Users/zhangyue/Project/c_languague/tank1/tank/res/tmp.txt");
+    mStagePaths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage1.txt");
+    mStagePaths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage2.txt");
 }
     
 int GameScene::input(int ch) {
     int cmd = GameHandler::generateCommand(ch);
     if (cmd == 0) return false;
-    return stage->handle(cmd);
+    return pStage->handle(cmd);
 }
 
 void GameScene::refresh() {
-    stage->refresh();
+    if (pStage != nullptr && !pStage->isEnd()) {
+        pStage->refresh();
+    } else if (curIndex >= mStagePaths.size()){
+        pStage->refresh();
+    } else {
+        if (pStage != nullptr) {
+            delete pStage;
+            pStage = nullptr;
+        }
+        pStage = new GameStage();
+        pStage->load(mStagePaths[curIndex]);
+        curIndex++;
+    }
 }

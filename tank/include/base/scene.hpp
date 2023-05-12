@@ -21,6 +21,7 @@ public:
     virtual void init() = 0;
     virtual int input(int ch) = 0;
     virtual void refresh() = 0;
+    virtual bool isEnd() = 0;
     virtual std::list<Element*> getElements() = 0;
 };
 

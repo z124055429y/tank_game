@@ -8,13 +8,16 @@
 class GameScene: public Scene
 {
 private:
-    GameStage *stage;
+    std::vector<std::string> mStagePaths;
+    GameStage *pStage;
+    int curIndex = 0;
 public:
     GameScene();
     ~GameScene();
     void init();
     int input(int ch);
     void refresh();
+    bool isEnd() { return curIndex >= mStagePaths.size() && pStage != nullptr && pStage->isEnd(); }
     std::list<Element*> getElements();
 };
 

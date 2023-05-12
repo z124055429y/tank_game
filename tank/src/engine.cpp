@@ -41,6 +41,10 @@ bool TankEngine::input(int op) {
 
 void TankEngine::refresh() {
     Scene *scene = mScene.back();
+    if (scene->isEnd()) {
+        mScene.pop_back();
+        scene = mScene.back();
+    }
     scene->refresh();
 }
 
