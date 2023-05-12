@@ -3,27 +3,27 @@
 #include "scene/game_scene.hpp"
 
 TEST(TankTest, SetTank) {
-    Tank t(RIGHT, 4);
-    EXPECT_EQ(RIGHT, t.getStatus());
-    EXPECT_EQ(false, t.isDead());
+    Tank *t = new Tank(RIGHT, 4);
+    EXPECT_EQ(RIGHT, t->getStatus());
+    EXPECT_EQ(false, t->isDead());
 
-    t.minusHp(4);
-    EXPECT_EQ(true, t.isDead());
+    t->minusHp(4);
+    EXPECT_EQ(true, t->isDead());
 }
 
 TEST(TankTest, DrawTank) {
-    Tank t(UP,4);
+    Tank *t = new Tank(UP,4);
     TankPainter p('*');
     int row, col;
-    int **bitmap = t.getBitmap(row, col);
+    int **bitmap = t->getBitmap(row, col);
     
     // 第一次绘制
-    p.draw(&t);
+    p.draw(t);
     EXPECT_EQ(bitmap[0][1], '*');
 
     // 更改方向绘制
-    t.setDirection(RIGHT);
-    p.draw(&t);
+    t->setDirection(RIGHT);
+    p.draw(t);
     EXPECT_EQ(bitmap[1][2], '*');
 }
 
@@ -64,8 +64,6 @@ TEST(TankTest, Fire) {
     stage.refresh();
     Bullet *b = stage.getBullets().front();
     EXPECT_EQ(Position(6, 4), b->getPosition());
-
-    delete t;
 }
 
 TEST(TankTest, SetEnermyTank) {
@@ -77,7 +75,5 @@ TEST(TankTest, SetEnermyTank) {
     {
         stage.refresh();
     }
-
-    delete t;
 
 }

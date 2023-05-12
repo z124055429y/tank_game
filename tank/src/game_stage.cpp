@@ -1,7 +1,26 @@
 #include "stage/game_stage.hpp"
 
 GameStage::GameStage(/* args */): mCmds(10, 0), mMap(nullptr), mDetector(nullptr), mState(nullptr) {}
-GameStage::~GameStage() {}
+GameStage::~GameStage() {
+    if (mTanks.size() != 0) {
+        for (auto &&tank : mTanks)
+        {
+            delete tank;
+        }
+    }
+    if (mBullets.size() != 0) {
+        for (auto &&bullet : mBullets)
+        {
+            delete bullet;
+        }
+    }
+    if (mMap != nullptr) {
+        delete mMap;
+    }
+    if (mDetector != nullptr) {
+        delete mDetector;
+    }
+}
 
 void GameStage::load(std::string path) {
     IO::load(path, this);
