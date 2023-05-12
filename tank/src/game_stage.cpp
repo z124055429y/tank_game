@@ -1,6 +1,6 @@
 #include "stage/game_stage.hpp"
 
-GameStage::GameStage(/* args */): mCmds(10, 0), mMap(nullptr), mDetector(nullptr), mState(nullptr) {}
+GameStage::GameStage(): mCmds(10, 0), mMap(nullptr), mDetector(nullptr), mState(nullptr), isFreeze(false) {}
 GameStage::~GameStage() {
     if (mTanks.size() != 0) {
         for (auto &&tank : mTanks)
@@ -27,7 +27,7 @@ void GameStage::load(std::string path) {
 }
 
 void GameStage::save(std::string path) {
-
+    IO::save(path, this);
 }
 
 void GameStage::init() {
@@ -98,6 +98,7 @@ void GameStage::tickMoveElement() {
 /// 坦克部分开始
 
 int GameStage::getTankAction(Tank *tank) {
+    if (isFreeze) return 0;
     int action = 0;
     int status = tank->getStatus();
     int index = -1;

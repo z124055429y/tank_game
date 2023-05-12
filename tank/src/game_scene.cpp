@@ -20,9 +20,9 @@ void GameScene::init() {
     mState = state;
 }
     
-int GameScene::input(int ch) {
+int GameScene::input(int ch, int x, int y) {
     if (ch == 'S') {
-        IO::save("/Users/zhangyue/Project/c_languague/tank1/tank/res/tmp.txt", pStage);
+        pStage->save("/Users/zhangyue/Project/c_languague/tank1/tank/res/tmp.txt");
         return POP_SCENE_GAME;
     }
     int cmd = GameHandler::generateCommand(ch);

@@ -22,6 +22,7 @@ Game::Game(): mQuit(false)
     noecho();   // 无回显
     curs_set(0);// 无光标
     cbreak();      // 无行缓冲
+    ret = mousemask(ALL_MOUSE_EVENTS, 0);
 }
 
 Game::~Game()
@@ -44,10 +45,19 @@ void Game::run() {
     tankEngine->init();
     
     while (!mQuit) {
-        char ch = getch();
+        int ch = getch();
         if (ch == 'q') { mQuit = true; break; }
         // 通过输入产生命令
-        mQuit = tankEngine->input(ch);
+        if (ch == KEY_MOUSE) {
+            mvprintw(25, 5,"run...");
+            MEVENT event;
+            if (getmouse(&event) == OK) {
+                mvprintw(25, 3, "pos = %d,%d", event.x, event.y);
+                mQuit = tankEngine->input(ch, event.x, event.y);
+            }
+        } else {
+            mQuit = tankEngine->input(ch);
+        }
     }
 
     tankEngine->destroy();
@@ -73,6 +83,7 @@ void Game::render() {
             }
         }
     }
+    mvprintw(20, 20, "ret = %d", ret);
 }
 
 void alarm_action(int signo)

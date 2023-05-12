@@ -3,9 +3,9 @@
 
 #include "engine.hpp"
 #include "scene/start_scene.hpp"
+#include "scene/build_scene.hpp"
 
 TankEngine::TankEngine() {
-    // scene = new GameScene();
     StartScene *scene = new StartScene();
     mScene.push_back(scene);
 }
@@ -23,31 +23,42 @@ void TankEngine::init() {
     scene->init();
 }
 
-bool TankEngine::input(int op) {
+bool TankEngine::input(int op, int x, int y) {
     Scene *scene = mScene.back();
-    int cmd = scene->input(op);
+    int cmd = scene->input(op, x, y);
     Scene *pushScene = nullptr;
     
     std::vector<std::string> paths;
     switch (cmd & MASK_PUSH_SCENE)
     {
     case PUSH_SCENE_GAME:
-        paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage1.txt");
-        paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage2.txt");
+        if ((cmd & MASK_POP_SCENE) == POP_SCENE_BUILD) {
+            paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/build.txt");
+        } else {
+            paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage1.txt");
+            paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage2.txt");
+        }
         pushScene = new GameScene(paths);
         pushScene->init();
         break;
-    case PUSH_RESTORE_GAME:
+    case PUSH_SCENE_RESTORE:
         paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/tmp.txt");
         paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage1.txt");
         paths.push_back("/Users/zhangyue/Project/c_languague/tank1/tank/res/stage/stage2.txt");
         pushScene = new GameScene(paths);
         pushScene->init();
         break;
+    case PUSH_SCENE_BUILD:
+        pushScene = new BuildScene("/Users/zhangyue/Project/c_languague/tank1/tank/res/build.txt");
+        pushScene->init();
+        break;
     }
     switch (cmd & MASK_POP_SCENE)
     {
     case POP_SCENE_GAME:
+        mScene.pop_back();
+        break;
+    case POP_SCENE_BUILD:
         mScene.pop_back();
         break;
     }

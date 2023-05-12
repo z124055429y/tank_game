@@ -41,7 +41,7 @@ public:
     /// @brief 输入
     /// @param op 输入 
     /// @return 是否退出
-    bool input(int op);
+    bool input(int op, int x = 0, int y = 0);
     /// @brief 初始化
     void init();
     /// @brief 销毁

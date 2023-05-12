@@ -35,6 +35,8 @@ private:
     StatePainter    statePainter;
     Generator generator;
     Detector *mDetector;
+    bool isFreeze;
+
     
     void updateTank();
     int getTankAction(Tank* tank);
@@ -68,6 +70,8 @@ public:
     std::list<Element*> getElements();
     /// 当前关卡是否结束
     bool isEnd() { return mTanks.size() == 1; }
+    /// @brief 是否暂停
+    void freeze() { isFreeze = true; }
 
     void addTank(Tank *tank);
     void addBullet(Bullet *bullet);

@@ -18,7 +18,7 @@ public:
     ~StartScene();
 
     void init();
-    int input(int ch);
+    int input(int ch, int x, int y);
     void refresh();
     bool isEnd() { return false; }
     std::list<Element*> getElements();

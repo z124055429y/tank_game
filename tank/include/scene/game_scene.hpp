@@ -18,7 +18,7 @@ public:
     GameScene(std::vector<std::string> paths);
     ~GameScene();
     void init();
-    int input(int ch);
+    int input(int ch, int x, int y);
     void refresh();
     bool isEnd() { return curIndex >= mStagePaths.size() && pStage != nullptr && pStage->isEnd(); }
     std::list<Element*> getElements();

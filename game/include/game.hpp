@@ -13,6 +13,7 @@ private:
     void render();
     /// @brief 刷新帧数据
     void refresh();
+    int ret = -1;
 public:
     Game(/* args */);
     ~Game();
