@@ -27,3 +27,165 @@
 - 当前坦克只能被子弹销毁，思考如何让坦克碰撞也销毁
 - 一些容器可以用set代替list, 进而降低删除的时间复杂度
 - 当前路径写死在代码中，可通过cmake编译时优化，将路径设置为可配置
+
+
+## game工程类关系
+
+```mermaid
+classDiagram
+  Game ..o Timer
+  Game ..o Engine
+  Game ..> Element
+
+  class Element
+  <<Abstract>> Element
+
+  class Game{
+    -TankEngine engine;
+    -Timer timer;
+    +run()
+    -render()
+    -refresh()
+  }
+   
+  class Timer{
+    +TankEngine engine;
+    +run()
+    -render()
+    -refresh()
+  }
+  class Engine {
+    +startTimer()
+    +stopTimer()
+  }
+```
+
+- main负责run启动游戏
+- 在构造和析构中初始化curses环境
+- refresh负责在每个时钟刷新数据
+- render负责渲染从引擎中得到的元素
+
+## element & painter
+
+```mermaid
+classDiagram
+  Element <|-- Tank
+  Element <|-- Bullet
+  Element <|-- Input
+  Element <|-- Menu
+  Element <|-- Map
+  Element <|-- State
+  Tank .. TankPainter
+  Bullet .. BulletPainter
+  Input .. InputPainter
+  Menu .. MenuPainter
+  Map .. MapPainter
+  State .. StatePainter
+
+  class Element {
+    # Position pos;
+    # Size size;
+    # STATUS status;
+    # int** bitmap;
+  }
+  class Tank {
+    - int hp;
+    - int damage;
+    - int speed;
+    - int bulletSpeed;
+  }
+  class Bullet {
+    - int speed;
+  }
+  class Input {
+    - string input;
+  }
+  class Map {
+    int** flag;
+  }
+  class Menu {
+    list items;
+  }
+  class State {
+    int score;
+  }
+  class TankPainter {
+  }
+  class BulletPainter {
+  }
+  class InputPainter {
+  }
+  class MapPainter {
+  }
+  class MenuPainter {
+  }
+  class StatePainter {
+  }
+```
+
+- 负责记录元素的属性（大小，位置等）
+- 每个元素有一个painter负责把Element的信息绘制成bitmap
+- bitmap表示当前元素的绘制信息，render通过这个值打印每个element
+
+### scene 场景
+
+```mermaid
+classDiagram
+  Scene <|.. BuildScene
+  Scene <|.. StartScene
+  Scene <|.. GameScene
+  class Scene {
+    +init()
+    +input()
+    +refresh()
+    +isEnd()
+    +getElement()
+  }
+  <<interface>> Scene
+
+  class BuildScene
+  class GameScene
+  class StartScene
+```
+
+- 场景类似于窗口，管理一组元素，接收一组特定的输入
+- 包括初始化、接收输入、刷新元素、是否结束、获取元素列表
+- `init`负责初始化场景元素
+- `input`负责接收来自用户的输入并操作元素中的数据
+- `refresh`负责刷新每一帧，配合`Timer`让场景动起来
+- `isEnd`负责判断当前场景是否满足结束条件
+- `getElement`负责获取元素，提供统一元素接口
+
+
+### handler 输入处理器
+
+- 每个场景都对应一组有效输入，负责对场景的响应行为（可以独立出来，eg: game_hander.hpp）
+
+### stage 舞台
+
+  ```mermaid
+  ---
+  title: refresh主逻辑
+  ---
+  flowchart TB
+
+    step1 --> step2
+    step2 --> step3
+    step3 --> step4
+    step4 --> step5
+
+    step1[updateTank]
+    step2[updateBullet]
+    step3[updateMap]
+    step4[handleCollision]
+    step5[tickMoveElement]
+  ```
+
+### action 行为
+- 给出了公共行为 Move Touch
+
+### Detector 碰撞检测
+
+### io
+- 负责加载文件中的游戏数据
+- 关卡，存储&恢复，自定义地图都用到
