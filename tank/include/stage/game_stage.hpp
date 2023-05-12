@@ -3,6 +3,7 @@
 
 #include <list>
 #include <vector>
+#include <string>
 
 #include "base/generator.hpp"
 #include "base/detector.hpp"
@@ -14,9 +15,11 @@
 #include "painter/bullet_painter.hpp"
 #include "painter/map_painter.hpp"
 #include "painter/state_painter.hpp"
+#include "io/io.hpp"
 
 class GameStage
 {
+friend class IO;
 private:
     std::vector<int>    mCmds;          // 存放每个周期的命令
     std::list<Tank*>    mTanks;         // 坦克列表
@@ -31,7 +34,7 @@ private:
     MapPainter      mapPainter;
     StatePainter    statePainter;
     Generator generator;
-    Detector *detector;
+    Detector *mDetector;
     
     void updateTank();
     int getTankAction(Tank* tank);
@@ -51,7 +54,9 @@ public:
     GameStage(/* args */);
     ~GameStage();
     void init();
-    
+    void load(std::string path);
+    void save(std::string path);
+
     /// @brief 每一帧刷新
     void refresh();
     /// @brief 处理输入命令
@@ -66,10 +71,12 @@ public:
     void addTank(Tank *tank);
     void addBullet(Bullet *bullet);
     void bindMap(Map *map);
+    void bindDetector(Detector *detector);
     void bindState(State *state);
     std::list<Tank*>    getTanks() { return mTanks; }
     std::list<Bullet*>  getBullets() { return mBullets; }
     std::vector<int>    getCmd() { return mCmds; };
+    Map*                getMap() { return mMap; };
 };
 
 

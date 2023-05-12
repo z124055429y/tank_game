@@ -7,8 +7,11 @@
 
 class GameScene: public Scene
 {
+private:
+    GameStage *stage;
 public:
-    GameStage stage;
+    GameScene();
+    ~GameScene();
     void init();
     bool input(int ch);
     void refresh();

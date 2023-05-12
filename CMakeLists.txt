@@ -13,5 +13,13 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+# jsoncpp
+# FetchContent_Declare(
+#   jsoncpp
+#   URL https://github.com/open-source-parsers/jsoncpp/archive/refs/tags/1.9.5.zip
+# )
+
+# FetchContent_MakeAvailable(jsoncpp)
+
 add_subdirectory(tank)
 add_subdirectory(game)

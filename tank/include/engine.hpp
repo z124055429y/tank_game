@@ -30,7 +30,6 @@ class TankEngine
 {
 private:
     GameScene *scene;
-    
 public:
     TankEngine();
     ~TankEngine();

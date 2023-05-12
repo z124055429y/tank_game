@@ -1,31 +1,35 @@
 #include "stage/game_stage.hpp"
 
-GameStage::GameStage(/* args */): mCmds(10, 0), mMap(nullptr), detector(nullptr), mState(nullptr) 
-{
+GameStage::GameStage(/* args */): mCmds(10, 0), mMap(nullptr), mDetector(nullptr), mState(nullptr) {}
+GameStage::~GameStage() {}
+
+void GameStage::load(std::string path) {
+    IO::load(path, this);
 }
 
-GameStage::~GameStage()
-{
+void GameStage::save(std::string path) {
+
 }
 
 void GameStage::init() {
-    Map *map = new Map(20, 40);
+    Detector *detector = new Detector({40, 80});
+    mDetector = detector;
+    Map *map = new Map(40, 80);
     mMap = map;
-    State *state = new State(50, 4, 3, 20, 1);
+    State *state = new State(90, 4, 3, 20, 1);
     mState = state;
-    detector = generator.allocDetector(map->getSize());
 
     Tank *tank1 = new Tank(PLAYER_ID_1 | DOWN, 2);
-    Tank *tank2 = new Tank(ENERMY_ID_1 | DOWN, 2);
+    // Tank *tank2 = new Tank(ENERMY_ID_1 | DOWN, 2);
     tank1->setPosition({1, 1});
-    tank2->setPosition({36, 1});
+    // tank2->setPosition({36, 1});
     mMap->addLand(5, 5, 2, 4, LAND_GRASS);
     mMap->addLand(10, 5, 2, 4, LAND_MUD_WALL);
     mMap->addLand(15, 5, 2, 4, LAND_IRON_WALL);
     mMap->addLand(20, 5, 2, 4, LAND_RIVER);
 
     mTanks.push_back(tank1);
-    mTanks.push_back(tank2);
+    // mTanks.push_back(tank2);
 }
 
 bool GameStage::handle(int command) {
@@ -102,7 +106,7 @@ int GameStage::getTankAction(Tank *tank) {
 
 bool GameStage::moveTank(Tank *tank, int action) {
     int flag = 0;
-    if (detector != nullptr && mMap != nullptr) {
+    if (mDetector != nullptr && mMap != nullptr) {
         std::list<Touch*> constraints;
         // 添加地图约束
         constraints.push_back(mMap);
@@ -111,7 +115,7 @@ bool GameStage::moveTank(Tank *tank, int action) {
         {
             constraints.push_back(tank);
         }
-        flag = detector->touchCheck(tank, constraints);
+        flag = mDetector->touchCheck(tank, constraints);
     }
     
     
@@ -240,8 +244,8 @@ void GameStage::updateState() {
 /// 状态部分结束
 
 void GameStage::handleCollision() {
-    if (detector == nullptr || mMap == nullptr) return;
-    detector->collisionCheck(mTanks, mBullets, mMap, mTmpTanks, mTmpBullets, mState);
+    if (mDetector == nullptr || mMap == nullptr) return;
+    mDetector->collisionCheck(mTanks, mBullets, mMap, mTmpTanks, mTmpBullets, mState);
     for (auto &&bullet : mTmpBullets)
     {
         generator.freeBullet(bullet);
@@ -285,8 +289,10 @@ void GameStage::addBullet(Bullet *bullet) {
 
 void GameStage::bindMap(Map *map) {
     mMap = map;
-    Size size = mMap->getSize();
-    detector = generator.allocDetector(size);
+}
+
+void GameStage::bindDetector(Detector *detector) {
+    mDetector = detector;
 }
 
 void GameStage::bindState(State *state) {

@@ -31,7 +31,7 @@ public:
     void setPosition(Position pos);
     /// @brief 获取元素大小
     Size getSize();
-    /// @brief 获取元素方向
+    /// @brief 获取元素状态
     STATUS getStatus();
     /// @brief 设置元素方向
     void setDirection(STATUS status);

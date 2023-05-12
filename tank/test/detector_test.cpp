@@ -5,10 +5,12 @@
 TEST(DetectTest, CheckTouch) {
     GameStage stage;
     Tank *tank = new Tank(PLAYER_ID_1|UP, 1);
-    tank->setPosition({2, 1});
     Map *map = new Map(40,20);
+    Detector *detector = new Detector({40,20});
+    tank->setPosition({2, 1});
     stage.addTank(tank);
     stage.bindMap(map);
+    stage.bindDetector(detector);
     
     EXPECT_EQ(Position(2, 1), tank->getPosition());
 
@@ -23,8 +25,10 @@ TEST(DetectTest, CheckBulletMapCollision) {
     Tank *tank = new Tank(PLAYER_ID_1|LEFT, 1);
     tank->setPosition({2, 1});
     Map *map = new Map(40,20);
+    Detector *detector = new Detector({40,20});
     stage.addTank(tank);
     stage.bindMap(map);
+    stage.bindDetector(detector);
 
     stage.handle(PLAYER_ID_1|FIRE);
     stage.refresh();
@@ -40,7 +44,9 @@ TEST(DetectTest, CheckBulletMapCollision) {
 TEST(DetectTest, CheckBulletBulletCollision) {
     GameStage stage;
     Map *map = new Map(40,20);
+    Detector *detector = new Detector({40,20});
     stage.bindMap(map);
+    stage.bindDetector(detector);
 
     // 同一点的碰撞
     Bullet *bullet1 = new Bullet(3, 2, DOWN);
@@ -73,10 +79,12 @@ TEST(DetectTest, CheckBulletBulletCollision) {
 TEST(DetectTest, CheckTankBulletCollision) {
     GameStage stage;
     Map *map = new Map(40,20);
+    Detector *detector = new Detector({40,20});
     Tank *tank = new Tank(PLAYER_ID_1|DOWN, 3);
     Bullet *bullet = new Bullet(3, 2, DOWN);
     tank->setPosition({3, 3});
     stage.bindMap(map);
+    stage.bindDetector(detector);
     stage.addTank(tank);
     stage.addBullet(bullet);
 
