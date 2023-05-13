@@ -1,5 +1,7 @@
 # TankGame
 
+- 注意: 运行前先修改关卡的路径 `game_scene.cpp` 中
+
 ## 简述
 
 - 采用cmake管理工程
